@@ -46,7 +46,7 @@ mod tests {
 // RESULTS TESTS
 
     #[test]
-    fn test_straight_flush() {
+    fn test_royal_flush() {
         let available_cards: Vec<(usize,usize)> = vec![
             (1,0),(1,10),(1,11),(1,12),(1,9),(0,9),(0,11)
         ];
@@ -55,6 +55,18 @@ mod tests {
         assert_eq!(straight_flush_report.0, true);
         assert_eq!(straight_flush_report.1, 1);
         assert_eq!(straight_flush_report.2, 13);
+    }
+
+    #[test]
+    fn test_straight_flush() {
+        let available_cards: Vec<(usize,usize)> = vec![
+            (2,1),(2,2),(0,1),(1,1),(2,3),(2,4),(2,5)
+        ];
+        let player_score = return_player_score(available_cards);
+        let straight_flush_report: (bool, usize, usize) = player_score.straight_flush();
+        assert_eq!(straight_flush_report.0, true);
+        assert_eq!(straight_flush_report.1, 2);
+        assert_eq!(straight_flush_report.2, 5);
     }
 
     #[test]
@@ -164,6 +176,18 @@ mod tests {
     }
 
     #[test]
+    fn test_count_duplicates_with_quads() {
+        let available_cards: Vec<(usize, usize)> = vec![
+            (3,1),(2,1),(0,1),(1,1),(2,2),(3,2),(3,3)
+        ];
+        let index: usize = 1;
+        let limit: usize = 14;
+        let duplicates: Vec<usize> = count_duplicates(&available_cards, index, limit);
+        assert_eq!(duplicates.len(), 14);
+        assert_eq!(duplicates, [0,4,2,1,0,0,0,0,0,0,0,0,0,0]);
+    }
+
+    #[test]
     fn test_duplicate_counter_suits() {
         let available_cards: Vec<(usize, usize)> = vec![
             (0,0),(0,0),(0,1),(1,1),(2,2),(3,2),(3,3)
@@ -184,6 +208,17 @@ mod tests {
         let multiples_report: (bool, Vec<usize>) = multiples(&available_cards, amount);
         assert_eq!(true, multiples_report.0);
         assert_eq!(multiples_report.1, [13,2,1]);
+    }
+
+    #[test]
+    fn test_multiples_report_quads() {
+        let available_cards: Vec<(usize, usize)> = vec![
+            (3,1),(2,1),(0,1),(1,1),(2,2),(3,2),(3,3)
+        ];
+        let amount: usize = 4;
+        let multiples_report: (bool, Vec<usize>) = multiples(&available_cards, amount);
+        assert_eq!(true, multiples_report.0);
+        assert_eq!(multiples_report.1, [1]);
     }
 
     #[test]
@@ -221,6 +256,24 @@ mod tests {
     }
 
     #[test]
+    fn test_winner_high_card_low() {
+        let player_1_cards: Vec<(usize,usize)> = vec![
+            (1,1),(2,7),
+        ];
+        let player_2_cards: Vec<(usize,usize)> = vec![
+            (3,1),(2,8),
+        ];
+        let board: Vec<(usize,usize)> = vec![
+            (3,0),(2,12),(1,11),(1,10),(3,2),
+        ];
+        let result = get_result(player_1_cards, player_2_cards, board);
+        assert!(
+            result.0.contains("Player 2 wins with ace high"),
+            "Result was not correct, value was `{}`", result.0
+        );      
+    }
+
+    #[test]
     fn test_winner_one_pair() {
         let player_1_cards: Vec<(usize,usize)> = vec![
             (1,1),(2,1),
@@ -252,6 +305,24 @@ mod tests {
         let result = get_result(player_1_cards, player_2_cards, board);
         assert!(
             result.0.contains("Player 2 wins with 2 pairs, 6s and 4s"),
+            "Result was not correct, value was `{}`", result.0
+        );
+    }
+
+    #[test]    
+    fn test_winner_two_pair_third_pair() {
+        let player_1_cards: Vec<(usize,usize)> = vec![
+            (1,1),(2,0),
+        ];
+        let player_2_cards: Vec<(usize,usize)> = vec![
+            (3,4),(2,4),
+        ];
+        let board: Vec<(usize,usize)> = vec![
+            (3,5),(2,5),(1,3),(1,3),(3,12),
+        ];
+        let result = get_result(player_1_cards, player_2_cards, board);
+        assert!(
+            result.0.contains("Player 2 wins with 2 pairs, 6s and 5s"),
             "Result was not correct, value was `{}`", result.0
         );
     }
@@ -360,6 +431,42 @@ mod tests {
         let result = get_result(player_1_cards, player_2_cards, board);
         assert!(
             result.0.contains("Player 1 and Player 2 split the pot with a full house, 7s full of 2s"),
+            "Result was not correct, value was `{}`", result.0
+        );
+    }
+
+   #[test]    
+    fn test_winner_quads() {
+        let player_1_cards: Vec<(usize,usize)> = vec![
+            (2,1),(3,1),
+        ];
+        let player_2_cards: Vec<(usize,usize)> = vec![
+            (0,5),(3,8),
+        ];
+        let board: Vec<(usize,usize)> = vec![
+            (0,1),(1,1),(2,2),(3,7),(3,3)
+        ];
+        let result = get_result(player_1_cards, player_2_cards, board);
+        assert!(
+            result.0.contains("Player 1 wins with quad 2s"),
+            "Result was not correct, value was `{}`", result.0
+        );
+    }
+
+   #[test]    
+    fn test_winner_straight_flush() {
+        let player_1_cards: Vec<(usize,usize)> = vec![
+            (2,1),(2,2),
+        ];
+        let player_2_cards: Vec<(usize,usize)> = vec![
+            (0,5),(3,8),
+        ];
+        let board: Vec<(usize,usize)> = vec![
+            (0,1),(1,1),(2,3),(2,4),(2,5)
+        ];
+        let result = get_result(player_1_cards, player_2_cards, board);
+        assert!(
+            result.0.contains("Player 1 wins with a 6 high straight flush, clubs"),
             "Result was not correct, value was `{}`", result.0
         );
     }

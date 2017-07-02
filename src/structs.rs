@@ -102,13 +102,13 @@ impl Score {
         let mut player_score: usize = 0; 
         let mut score_string: String = String::new();
         if self.straight_flush().0 == true {
-            let suit: String = suit_map[self.straight_flush().2].clone();
+            let suit: String = suit_map[self.straight_flush().1].clone();
             player_score = 8;
-            score_string = format!("an {} high straight flush, {}s", self.straight_flush().2.to_string(), suit);
+            score_string = format!("a {} high straight flush, {}", card_map[self.straight_flush().2], suit);
         }
         else if self.quads.0 == true  {
             player_score = 7;
-            score_string = format!("quad {}s", self.quads.1[0].to_string());
+            score_string = format!("quad {}s", card_map[self.quads.1[0]]);
         }
         else if self.full_house().0 == true  {
             player_score = 6;

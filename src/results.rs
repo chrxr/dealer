@@ -12,7 +12,7 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
     }
     else {
         if player_1_score.final_score().0 == 0 {
-            for i in 0..6 {
+            for i in 0..5 {
                 if player_1_score.high_card[i].1 > player_2_score.high_card[i].1 {
                     let result: (String, String) = results_string(player_1_score, player_2_score);
                     return result
@@ -88,11 +88,11 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
         }
         else if player_1_score.final_score().0 == 3 {
 
-            if player_1_score.trips.1[1] > player_2_score.trips.1[1] {
+            if player_1_score.trips.1[0] > player_2_score.trips.1[0] {
                 let result: (String, String) = results_string(player_1_score, player_2_score);
                 return result
             }
-            else if player_2_score.trips.1[1] > player_1_score.trips.1[1] {
+            else if player_2_score.trips.1[0] > player_1_score.trips.1[0] {
                 let result: (String, String) = results_string(player_2_score, player_1_score);
                 return result
             }
@@ -167,11 +167,11 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
         }
         else if player_1_score.final_score().0 == 7 {
             for i in 0..5 {
-                if player_1_score.quads.1 > player_2_score.quads.1 {
+                if player_1_score.quads.1[0] > player_2_score.quads.1[0] {
                     let result: (String, String) = results_string(player_1_score, player_2_score);
                     return result
                 }
-                else if player_2_score.quads.1 > player_1_score.quads.1 {
+                else if player_2_score.quads.1[0] > player_1_score.quads.1[0] {
                     let result: (String, String) = results_string(player_2_score, player_1_score);
                     return result
                 }
@@ -182,15 +182,13 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
                     let mut player_2_high_card = player_2_score.high_card.clone();
                     player_2_high_card.retain(|&x| x.1 != player_2_score.quads.1[0]);
 
-                    for i in 0..1 {
-                        if player_1_high_card[i].1 > player_2_high_card[i].1 {
-                            let result: (String, String) = results_string(player_1_score, player_2_score);
-                            return result
-                        }
-                        else if player_2_high_card[i].1 > player_1_high_card[i].1 {
-                            let result: (String, String) = results_string(player_2_score, player_1_score);
-                            return result
-                        }
+                    if player_1_high_card[0].1 > player_2_high_card[0].1 {
+                        let result: (String, String) = results_string(player_1_score, player_2_score);
+                        return result
+                    }
+                    else if player_2_high_card[0].1 > player_1_high_card[0].1 {
+                        let result: (String, String) = results_string(player_2_score, player_1_score);
+                        return result
                     }
                 }
                 let result: (String, String) = split_pot_string(player_1_score, player_2_score);

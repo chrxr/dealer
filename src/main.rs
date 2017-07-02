@@ -17,7 +17,7 @@ fn main() {
     let mut player_2_winners = 0;
     let mut split_pots = 0;
 
-    for i in 0..20{
+    for i in 0..1000000{
         let new_game = create_game();
         let player_1_score: Score = get_score(&new_game.player_1, &new_game.board);
         let player_2_score: Score = get_score(&new_game.player_2, &new_game.board);
