@@ -8,11 +8,12 @@ pub struct Game {
 
 pub struct Player {
     pub name: String,
-    pub cards: Vec<(usize, usize)>,
+    pub hand: Vec<(usize, usize)>,
 }
 
 pub struct Score {
     pub name: String,
+    pub hand: Vec<(usize, usize)>,
     pub full_board: Vec<(usize, usize)>,
     pub high_card: Vec<(usize, usize)>,
     pub flush: (bool, Vec<(usize, usize)>),
@@ -142,6 +143,9 @@ impl Score {
     }
 }
 
+// pub struct Result {
+//     winning_string: 
+// }
 // Length 1 things
 // -- pairs
 // -- trips

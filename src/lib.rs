@@ -19,6 +19,7 @@ mod tests {
     fn return_player_score(available_cards: Vec<(usize,usize)>) -> Score {
         let player_score = Score {
             name: String::from("PLAYER"),
+            hand: vec![(0,0), (1,0)],
             full_board: available_cards.clone(),
             high_card: high_card(&available_cards),
             flush: return_flush(&available_cards),
@@ -235,11 +236,11 @@ mod tests {
     fn return_game(player_1_cards: Vec<(usize, usize)>, player_2_cards: Vec<(usize, usize)>,  board: Vec<(usize, usize)>) -> Game {
         let player_1 = Player {
             name: String::from("Player 1"),
-            cards: player_1_cards,
+            hand: player_1_cards,
         };
         let player_2 = Player {
             name: String::from("Player 2"),
-            cards: player_2_cards,
+            hand: player_2_cards,
         };
         Game {
             player_1: player_1,
@@ -248,7 +249,7 @@ mod tests {
         }
     }
 
-    fn get_result(player_1_cards: Vec<(usize, usize)>, player_2_cards: Vec<(usize, usize)>,  board: Vec<(usize, usize)>) -> (String, String, usize) {
+    fn get_result(player_1_cards: Vec<(usize, usize)>, player_2_cards: Vec<(usize, usize)>,  board: Vec<(usize, usize)>) -> (String, String, usize, Score, Score) {
         let new_game: Game = return_game(player_1_cards, player_2_cards, board);
         let player_1_score: Score = get_score(&new_game.player_1, &new_game.board);
         let player_2_score: Score = get_score(&new_game.player_2, &new_game.board);

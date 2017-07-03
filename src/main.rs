@@ -13,20 +13,9 @@ use dealer::new_game::create_game;
 //   - API for returning status of game, current cards, revealing cards as they are dealt
 
 fn main() {
-    let mut player_1_winners = 0;
-    let mut player_2_winners = 0;
-    let mut split_pots = 0;
-    let mut straight_flushes = 0;
-    let mut quads = 0;
-    let mut full_houses = 0;
-    let mut flushes = 0;
-    let mut straights = 0;
-    let mut trips = 0;
-    let mut two_pairs = 0;
-    let mut pairs = 0;
-    let mut errors = 0;
+    let mut score_board: Vec<usize> = vec![0; 9];
 
-    for i in 0..10000{
+    for i in 0..1000{
         let new_game = create_game();
         let player_1_score: Score = get_score(&new_game.player_1, &new_game.board);
         let player_2_score: Score = get_score(&new_game.player_2, &new_game.board);
@@ -34,55 +23,25 @@ fn main() {
         // println!("FINAL SCORE: {}", player_1_score.final_score().0);
         // player_2_score.print_score();
         // println!("FINAL SCORE: {}", player_2_score.final_score().0);
-        let winner: (String, String, usize) = declare_winner(player_1_score, player_2_score);
-        if winner.0.contains("Player 1 wins") {
-            player_1_winners = player_1_winners + 1;
-        }
-        else if winner.0.contains("Player 2 wins") {
-            player_2_winners = player_2_winners + 1;
-        }
-        else if winner.0.contains("split") {
-            split_pots = split_pots + 1;
-        }
-        
-        if winner.0.contains("straight flush") {
-            straight_flushes = straight_flushes + 1;
-        }
-        else if winner.0.contains("full house") {
-            full_houses = full_houses + 1;
-        }
-        else if winner.0.contains("quad") {
-            quads = quads + 1;
-        }
-        else if winner.0.contains("flush") {
-            flushes = flushes + 1;
-        }
-        else if winner.0.contains("straight") {
-            straights = straights + 1;
-        }
-        else if winner.0.contains("trip") {
-            trips = trips + 1;
-        }
-        else if winner.0.contains("2 pairs") {
-            two_pairs = two_pairs + 1;
-        }
-        else if winner.0.contains("a pair") {
-            pairs = pairs + 1;
-        }
-        else if winner.0.contains("WHY") {
-            errors = errors + 1;
+        let winner: (String, String, usize, Score, Score) = declare_winner(player_1_score, player_2_score);
+        score_board[winner.2] = score_board[winner.2] + 1;
+        if winner.4.final_score().0 == 3 {
+            println!("{:?}", winner.3.hand);
+            println!("{}", winner.0);
+            println!("{:?}", winner.4.hand);
+            println!("{}", winner.1);
         }
     }
-    println!("Player 1 wins: {}", player_1_winners);
-    println!("Player 2 wins: {}", player_2_winners);
-    println!("Pair: {}", pairs);
-    println!("2 pair: {}", two_pairs);
-    println!("Trips: {}", trips);
-    println!("Straights: {}", straights);
-    println!("Split pots: {}", split_pots);
-    println!("Flushes: {}", flushes);
-    println!("Full houses: {}", full_houses);
-    println!("Quads: {}", quads);
-    println!("Straight flushes: {}", straight_flushes);
-    println!("Errors!!!: {}", errors);
+    // println!("Player 1 wins: {}", player_1_winners);
+    // println!("Player 2 wins: {}", player_2_winners);
+    println!("High cards: {}", score_board[0]);
+    println!("Pair: {}", score_board[1]);
+    println!("2 pair: {}", score_board[2]);
+    println!("Trips: {}", score_board[3]);
+    println!("Straights: {}", score_board[4]);
+    println!("Flushes: {}", score_board[5]);
+    println!("Full houses: {}", score_board[6]);
+    println!("Quads: {}", score_board[7]);
+    println!("Straight flushes: {}", score_board[8]);
+
 }

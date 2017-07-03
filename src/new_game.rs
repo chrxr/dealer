@@ -19,11 +19,11 @@ pub fn create_game() -> Game {
     }
     let player_1: Player = Player {
         name: String::from("Player 1"),
-        cards: cards_vec[0..2].to_vec(),
+        hand: cards_vec[0..2].to_vec(),
     };
     let player_2: Player = Player {
         name: String::from("Player 2"),
-        cards: cards_vec[2..4].to_vec(), 
+        hand: cards_vec[2..4].to_vec(), 
     };
     Game {
         player_1: player_1,
