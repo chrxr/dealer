@@ -1,38 +1,38 @@
 use super::structs::Player;
 use super::structs::Score;
 
-pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, String) {
+pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, String, usize) {
     if player_1_score.final_score().0 > player_2_score.final_score().0 {
-        let result: (String, String) = results_string(player_1_score, player_2_score);
+        let result: (String, String, usize) = results_string(player_1_score, player_2_score);
         return result
     }
     else if player_2_score.final_score().0 > player_1_score.final_score().0 {
-        let result: (String, String) = results_string(player_2_score, player_1_score);
+        let result: (String, String, usize) = results_string(player_2_score, player_1_score);
         return result
     }
     else {
         if player_1_score.final_score().0 == 0 {
             for i in 0..5 {
                 if player_1_score.high_card[i].1 > player_2_score.high_card[i].1 {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_score.high_card[i].1 > player_1_score.high_card[i].1 {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
             }
-            let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
             return result
         }
         else if player_1_score.final_score().0 == 1 {
 
             if player_1_score.pairs.1[0] > player_2_score.pairs.1[0] {
-                let result: (String, String) = results_string(player_1_score, player_2_score);
+                let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                 return result
             }
             else if player_2_score.pairs.1[0] > player_1_score.pairs.1[0] {
-                let result: (String, String) = results_string(player_2_score, player_1_score);
+                let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                 return result
             }
             else {
@@ -44,26 +44,26 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
 
                 for i in 0..2 {
                     if player_1_high_card[i].1 > player_2_high_card[i].1 {
-                        let result: (String, String) = results_string(player_1_score, player_2_score);
+                        let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                         return result
                     }
                     else if player_2_high_card[i].1 > player_1_high_card[i].1 {
-                        let result: (String, String) = results_string(player_2_score, player_1_score);
+                        let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                         return result
                     }
                 }
             }
-            let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
             return result
         }
         else if player_1_score.final_score().0 == 2 {
 
             if player_1_score.pairs.1[1] > player_2_score.pairs.1[1] {
-                let result: (String, String) = results_string(player_1_score, player_2_score);
+                let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                 return result
             }
             else if player_2_score.pairs.1[1] > player_1_score.pairs.1[1] {
-                let result: (String, String) = results_string(player_2_score, player_1_score);
+                let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                 return result
             }
             else {
@@ -74,26 +74,26 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
                 player_2_high_card.retain(|&x| x.1 != player_2_score.pairs.1[0] && x.1 != player_2_score.pairs.1[1]);
 
                 if player_1_high_card[0].1 > player_2_high_card[0].1 {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_high_card[0].1 > player_1_high_card[0].1 {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
             
             }
-            let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
             return result
         }
         else if player_1_score.final_score().0 == 3 {
 
             if player_1_score.trips.1[0] > player_2_score.trips.1[0] {
-                let result: (String, String) = results_string(player_1_score, player_2_score);
+                let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                 return result
             }
             else if player_2_score.trips.1[0] > player_1_score.trips.1[0] {
-                let result: (String, String) = results_string(player_2_score, player_1_score);
+                let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                 return result
             }
             else {
@@ -105,74 +105,76 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
 
                 for i in 0..1 {
                     if player_1_high_card[i].1 > player_2_high_card[i].1 {
-                        let result: (String, String) = results_string(player_1_score, player_2_score);
+                        let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                         return result
                     }
                     else if player_2_high_card[i].1 > player_1_high_card[i].1 {
-                        let result: (String, String) = results_string(player_2_score, player_1_score);
+                        let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                         return result
                     }
                 }
             }
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
+            return result
         }
         else if player_1_score.final_score().0 == 4 {
             for i in 0..5 {
                 if player_1_score.straight.1[i] > player_2_score.straight.1[i] {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_score.straight.1[i] > player_1_score.straight.1[i] {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
             }
-            let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
             return result
         }
         else if player_1_score.final_score().0 == 5 {
             for i in 0..5 {
                 if player_1_score.flush.1[i].1 > player_2_score.flush.1[i].1 {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_score.flush.1[i].1 > player_1_score.flush.1[i].1 {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
             }
-            let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
             return result
         }
         else if player_1_score.final_score().0 == 6 {
             for i in 0..5 {
                 if player_1_score.full_house().1 > player_2_score.full_house().1 {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_score.full_house().1 > player_1_score.full_house().1 {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
                 else if player_1_score.full_house().2 > player_2_score.full_house().2 {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_score.full_house().2 > player_1_score.full_house().2 {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
             }
-            let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
             return result
         }
         else if player_1_score.final_score().0 == 7 {
             for i in 0..5 {
                 if player_1_score.quads.1[0] > player_2_score.quads.1[0] {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_score.quads.1[0] > player_1_score.quads.1[0] {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
                 else {
@@ -183,46 +185,48 @@ pub fn declare_winner(player_1_score: Score, player_2_score: Score) -> (String, 
                     player_2_high_card.retain(|&x| x.1 != player_2_score.quads.1[0]);
 
                     if player_1_high_card[0].1 > player_2_high_card[0].1 {
-                        let result: (String, String) = results_string(player_1_score, player_2_score);
+                        let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                         return result
                     }
                     else if player_2_high_card[0].1 > player_1_high_card[0].1 {
-                        let result: (String, String) = results_string(player_2_score, player_1_score);
+                        let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                         return result
                     }
                 }
-                let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+                let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
                 return result
             }
         }
         else if player_1_score.final_score().0 == 8 {
             for i in 0..5 {
                 if player_1_score.straight_flush().2 > player_2_score.straight_flush().2 {
-                    let result: (String, String) = results_string(player_1_score, player_2_score);
+                    let result: (String, String, usize) = results_string(player_1_score, player_2_score);
                     return result
                 }
                 else if player_2_score.straight_flush().2 > player_1_score.straight_flush().2 {
-                    let result: (String, String) = results_string(player_2_score, player_1_score);
+                    let result: (String, String, usize) = results_string(player_2_score, player_1_score);
                     return result
                 }
             }
-            let result: (String, String) = split_pot_string(player_1_score, player_2_score);
+            let result: (String, String, usize) = split_pot_string(player_1_score, player_2_score);
             return result
         }
-        return (String::from("WHY?"), String::from("HOW?"))
+        return (String::from("WHY?"), String::from("HOW?"), 99)
     }
 }
 
-pub fn results_string(winner: Score, loser: Score) -> (String, String) {
+pub fn results_string(winner: Score, loser: Score) -> (String, String, usize) {
     let winner_string = format!("{} wins with {}", winner.name, winner.final_score().1);
     let loser_string = format!("{} has {}", loser.name, loser.final_score().1);
-    (winner_string, loser_string)
+    let winner_hand = winner.final_score().0;
+    (winner_string, loser_string, winner_hand)
 }
 
-pub fn split_pot_string(loser_1: Score, loser_2: Score) -> (String, String) {
+pub fn split_pot_string(loser_1: Score, loser_2: Score) -> (String, String, usize) {
     let loser_1_string = format!("{} and {} split the pot with {}", loser_1.name, loser_2.name, loser_1.final_score().1);
     let loser_2_string = String::from(" ");
-    (loser_1_string, loser_2_string)
+    let loser_1_hand = loser_1.final_score().0;
+    (loser_1_string, loser_2_string, loser_1_hand)
 }   
 
 pub fn get_score(player: &Player, board: &Vec<(usize, usize)>) -> Score {

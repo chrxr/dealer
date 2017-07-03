@@ -248,7 +248,7 @@ mod tests {
         }
     }
 
-    fn get_result(player_1_cards: Vec<(usize, usize)>, player_2_cards: Vec<(usize, usize)>,  board: Vec<(usize, usize)>) -> (String, String) {
+    fn get_result(player_1_cards: Vec<(usize, usize)>, player_2_cards: Vec<(usize, usize)>,  board: Vec<(usize, usize)>) -> (String, String, usize) {
         let new_game: Game = return_game(player_1_cards, player_2_cards, board);
         let player_1_score: Score = get_score(&new_game.player_1, &new_game.board);
         let player_2_score: Score = get_score(&new_game.player_2, &new_game.board);
